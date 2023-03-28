@@ -16,6 +16,13 @@ def print_chars(text, duration=0, wait=0, newline=True):
     if newline:
         print("")
     
+#           Note:
+# This currently only supports one user.
+# Later on data will be stored for multiple
+# users inside of objects derived from the
+# base User class, however this funcionality
+# has not been added yet
+
 #Writes acc_info dict to json file
 def save_acc_info(info):
     with open("acc_info.json", "w") as file:
@@ -63,6 +70,7 @@ def create_account():
     print_line(15)
     startup()
 
+#Called at start
 def startup():
     if acc_info["acc_created"]:
         print_chars("Starting", 0.5, 0.5)
@@ -115,8 +123,69 @@ def startup():
     else:
         create_account()
 
+#Simple calculator - can only add, subtract, multiply or divide 2 numbers.
+def calculator():
+    while True:
+        print_chars("\nWhat would you like to do? (add/subtract/multiply/divide): ", 0.5, 0, False)
+        operation = input()
+
+        if operation.lower() == "add" or operation.lower() == "+":
+            operation = "+"
+        elif operation.lower() == "subtract" or operation.lower() == "-" or operation.lower() == "minus":
+            operation = "-"
+        elif operation.lower() == "multiply" or operation.lower() == "x" or operation.lower() == "times" or operation.lower() == "*":
+            operation = "*"
+        elif operation.lower() == "divide" or operation.lower() == "/":
+            operation = "/"
+        else:
+            print("\nError, invalid command. Please try again.")
+            continue
+        break
+
+    while True:
+        print_chars("\nEnter your first number: ", 0.5, 0, False)
+        num1 = input()
+
+        try:
+            num1 = int(num1)
+            break
+        except:
+            print("Error - your value must be a number")
+
+    while True:
+        print_chars("\nEnter your second number: ", 0.5, 0, False)
+        num2 = input()
+
+        try:
+            num2 = int(num2)
+            break
+        except:
+            print("\nError - your value must be a number")
+
+    print_line()
+
+    if operation == "+":
+        print(num1 + num2)
+    elif operation == "-":
+        print(num1 - num2)
+    elif operation == "*":
+        print(num1 * num2)
+    else:
+        print(num1 / num2)
+
+    
+
+
+#This is where the user can acess different apps inside the os
 def main():
     while True:
-        input()
+        print_chars("\nWhat would you like to do: ", 0.5, 0, False)
+        command = input()
+
+        if command.lower() == "calc" or command.lower() == "calculator":
+            calculator()
+
+#Copys json file to main dictionary which will be acessed throughout the script
 acc_info = load_acc_info()
+
 startup()
